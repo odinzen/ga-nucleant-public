@@ -1,0 +1,18 @@
+compound,class,structure_source,disregistry_010_percent,density_g_cm3,predicted_potency_f,measured_undercooling_K,notes
+HfN,nitride,ICSD,0.04,13.8,0.000,,
+ScN,nitride,ICSD,0.49,4.29,0.000,,
+VO₂ (rutile),oxide,ICSD,0.69,4.57,0.000,,Stable polymorph
+NbC,carbide,ICSD,1.17,7.82,0.001,,
+ZrN,nitride,ICSD,1.22,7.29,0.001,<10,Upper bound
+TaC,carbide,ICSD,1.48,14.5,0.002,,
+TiO₂ (rutile),oxide,ICSD,1.57,4.25,0.002,,Stable polymorph
+HfC,carbide,ICSD,2.54,12.7,0.014,<20,Upper bound
+NbN,nitride,ICSD,2.90,8.47,0.022,36.5,
+ZrC,carbide,ICSD,3.87,6.73,0.065,30.0,
+TiC,carbide,ICSD,4.31,4.93,0.095,59.5,
+TiN,nitride,ICSD,6.21,5.22,0.305,63.0,
+TeO₂,oxide,ICSD,6.35,6.02,0.324,38.0,Reduced in Ga melt (Zhang 2020)
+VN,nitride,ICSD,8.49,6.13,0.652,,
+Ta₂O₅,oxide,mp-1539317,14.35,8.20,1.000,,"Single-axis coincidence, rejected"
+Nb₂O₅,oxide,mp-680944,14.59,4.60,1.000,,"Single-axis coincidence, rejected"
+β-Si₃N₄,nitride,mp-2245,24.23,3.19,1.000,68.9,Failed control (Chakravarty 2021)
