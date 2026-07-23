@@ -1,4 +1,4 @@
-# Supercooling nucleants in gallium — data and code
+# Supercooling nucleants in gallium: data and code
 
 Data and reproducibility code for:
 
@@ -50,4 +50,4 @@ paper if you use either.
 
 ## Contact
 
-Michael E. Bustamante, Odinzen LLC — michaelbusta@odinzen.io
+Michael E. Bustamante, Odinzen LLC, michaelbusta@odinzen.io
