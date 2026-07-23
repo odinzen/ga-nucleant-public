@@ -42,6 +42,12 @@ The CALPHAD database and the nucleation engine used in the paper are proprietary
 not included here. Data supporting the findings are available from the corresponding
 author on reasonable request.
 
+## Licence
+
+The code (`pcm_cell_model.py` and everything under `figures/`) is under the MIT License,
+see `LICENSE`. The two CSV data tables are under CC BY 4.0, see `LICENSE-DATA`. Cite the
+paper if you use either.
+
 ## Contact
 
 Michael E. Bustamante, Odinzen LLC — michaelbusta@odinzen.io
