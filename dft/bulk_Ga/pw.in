@@ -1,0 +1,54 @@
+&CONTROL
+   calculation      = 'vc-relax'
+   restart_mode     = 'from_scratch'
+   tstress          = .true.
+   tprnfor          = .true.
+   outdir           = './out'
+   prefix           = 'pw'
+   pseudo_dir       = './pseudo'
+/
+&SYSTEM
+   ibrav            = 0
+   nat              = 8
+   ntyp             = 1
+   ecutwfc          = 60.0
+   ecutrho          = 480.0
+   occupations      = 'smearing'
+   degauss          = 0.01
+   smearing         = 'cold'
+/
+&ELECTRONS
+   conv_thr         = 1e-07
+   mixing_beta      = 0.3
+/
+&IONS
+   ion_dynamics     = 'bfgs'
+/
+&CELL
+   cell_dofree      = 'all'
+/
+&FCP
+/
+&RISM
+/
+ATOMIC_SPECIES
+Ga 69.723 Ga.pbe-dn-kjpaw_psl.1.0.0.UPF
+
+K_POINTS automatic
+7 4 7  0 0 0
+
+CELL_PARAMETERS angstrom
+4.51970000000000 0.00000000000000 0.00000000000000
+0.00000000000000 7.66330000000000 0.00000000000000
+0.00000000000000 0.00000000000000 4.52570000000000
+
+ATOMIC_POSITIONS angstrom
+Ga 0.0000000000 1.1870451700 0.3665817000  
+Ga 0.0000000000 2.6446048300 2.6294317000  
+Ga 0.0000000000 5.0186951700 1.8962683000  
+Ga 0.0000000000 6.4762548300 4.1591183000  
+Ga 2.2598500000 5.0186951700 0.3665817000  
+Ga 2.2598500000 6.4762548300 2.6294317000  
+Ga 2.2598500000 1.1870451700 1.8962683000  
+Ga 2.2598500000 2.6446048300 4.1591183000  
+

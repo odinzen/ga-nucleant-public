@@ -22,6 +22,7 @@ satisfies all four.
 | `Table_S3_validation_statistics.csv` | Rank and linear correlations of measured undercooling against disregistry, per dataset |
 | `pcm_cell_model.py` | The lumped phase-change cell model behind Figure 4. Run it to reproduce the junction-temperature history for the three cases |
 | `figures/` | The scripts that generate Figures 1-4, Figure S1, and the graphical abstract |
+| `dft/` | Quantum ESPRESSO inputs and analysis for the first-principles work of adhesion (Section 2.4), computed on the Sol supercomputer at Arizona State University. Inputs and `analyze.py` reproduce the W_ad values in `dft/results_W_ad.csv`; raw outputs are not archived |
 
 ## Reproducing
 
@@ -38,9 +39,10 @@ not admitted. Densities are experimental crystallographic values, set against li
 gallium at 6.05 g cm^-3; TeO2 is paratellurite. Measured undercoolings marked `<` are
 upper bounds. Sources for each structure are given in the `structure_source` column.
 
-The CALPHAD database and the nucleation engine used in the paper are proprietary and are
-not included here. Data supporting the findings are available from the corresponding
-author on reasonable request.
+The first-principles interface calculations were run on the Sol supercomputer at Arizona
+State University; their Quantum ESPRESSO inputs and analysis are archived here under `dft/`.
+The CALPHAD database and the nucleation engine used in the paper are proprietary, are not
+included here, and are available from the corresponding author on reasonable request.
 
 ## Licence
 
