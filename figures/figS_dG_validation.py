@@ -1,6 +1,14 @@
 """SI figure: exact CALPHAD driving force for solidification of pure gallium vs
 the linear Turnbull form, with the percent deviation on a second axis. Data from
-the Ga-In-Sn TDB (G_LIQUID - G_ORTHORHOMBIC_GA for pure Ga)."""
+the Ga-In-Sn TDB (G_LIQUID - G_ORTHORHOMBIC_GA for pure Ga).
+
+This is the one script here that needs the proprietary Ga-In-Sn CALPHAD database
+(not distributed), because its sole purpose is to check the approximation used
+everywhere else. The main results use the linear Turnbull driving force, which needs
+no database and is reproducible from the paper's equations; this figure shows that
+linear form stays within a few percent of the exact CALPHAD driving force over the
+relevant undercooling range. The reported results therefore do not depend on the
+proprietary database."""
 import os
 import numpy as np
 import matplotlib.pyplot as plt

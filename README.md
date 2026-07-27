@@ -41,8 +41,11 @@ upper bounds. Sources for each structure are given in the `structure_source` col
 
 The first-principles interface calculations were run on the Sol supercomputer at Arizona
 State University; their Quantum ESPRESSO inputs and analysis are archived here under `dft/`.
-The CALPHAD database and the nucleation engine used in the paper are proprietary, are not
-included here, and are available from the corresponding author on reasonable request.
+The data and code archived here, together with the methods described in the paper, reproduce
+the reported results using standard open-source software (Python, a standard thermodynamic
+dataset for the Ellingham stability screen, and Quantum ESPRESSO for the interface energies).
+The CALPHAD database and the nucleation engine used in the paper are proprietary tools of
+Odinzen LLC and are not included here.
 
 ## Licence
 
