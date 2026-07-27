@@ -19,6 +19,7 @@ supercooling nucleants in gallium and its low-melting alloys".
 
     python pcm_cell_model.py          # prints the protection times, writes figure_4.png
 """
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -31,48 +32,65 @@ TS = 20.0       # cold plate, degC
 TM = 29.76      # gallium melt point, degC
 T_LIMIT = 60.0  # junction cap, degC
 R_COOL = 0.73   # buffer-to-plate resistance, K/W
-T_ON, T_OFF = 180.0, 60.0   # load-on / load-off, s
+# The rest interval must exceed the re-solidification time (~M*L / cooling power at the
+# freezing plateau, about 75 s here) or even a perfect nucleant cannot recover between
+# cycles. A representative equal-duty cycle is used.
+T_ON, T_OFF = 180.0, 180.0  # load-on / load-off, s
 DT = 0.5        # timestep, s
 N_CYCLES = 6
+LCAP = M * L    # total latent capacity, J
 
 
 def simulate(residual_undercooling, n_cycles=N_CYCLES):
     """Junction history for a given residual supercooling (K below the melt point).
 
-    The buffer can only refreeze if its nucleation temperature sits above the cold
-    plate; otherwise it stays liquid for the rest of the run and the latent capacity
-    is lost after the first melt.
+    A single bounded variable, `stored`, tracks the latent heat held in the solid
+    (0 = fully liquid, LCAP = fully solid). The buffer melts at Tm when heated and,
+    if it can nucleate above the cold plate, freezes at the nucleation temperature when
+    cooled. If the residual supercooling puts the nucleation temperature below the cold
+    plate, the buffer never re-solidifies and carries sensible heat only after the
+    first melt.
     """
-    t_nucleate = TM - residual_undercooling
-    can_freeze = t_nucleate > TS
+    t_nuc = TM - residual_undercooling
+    can_freeze = t_nuc > TS
 
-    t, temp, phase, latent = 0.0, TS, "solid", 0.0
+    t, temp, stored = 0.0, TS, LCAP        # start fully solid at the plate temperature
     times, temps = [t], [temp]
     cycle, load_on, phase_start = 0, True, 0.0
 
     while cycle < n_cycles:
         phase_end = phase_start + (T_ON if load_on else T_OFF)
         while t < phase_end:
-            q = Q_LOAD if load_on else -max(0.0, (temp - TS) / R_COOL)
+            dQ = (Q_LOAD if load_on else -max(0.0, (temp - TS) / R_COOL)) * DT
 
-            if phase == "solid":
-                temp += q * DT / (M * CP)
-                if temp >= TM and load_on:
-                    temp, phase, latent = TM, "melting", M * L
-            elif phase == "melting":
-                temp = TM
-                latent -= q * DT
-                if latent <= 0:
-                    latent, phase = 0.0, "liquid"
-            elif phase == "liquid":
-                temp += q * DT / (M * CP)
-                if not load_on and can_freeze and temp <= t_nucleate:
-                    temp, phase, latent = t_nucleate, "freezing", M * L
-            elif phase == "freezing":
-                temp = t_nucleate
-                latent += q * DT          # q is negative while cooling
-                if latent <= 0:
-                    latent, phase = 0.0, "solid"
+            if dQ >= 0:                     # heating
+                if stored > 0:              # solid present: warm to Tm, then melt
+                    if temp < TM:
+                        temp += dQ / (M * CP)
+                        if temp > TM:
+                            stored -= (temp - TM) * (M * CP)
+                            temp = TM
+                    else:
+                        stored -= dQ
+                    if stored < 0:          # fully melted, spill into sensible heat
+                        temp = TM + (-stored) / (M * CP)
+                        stored = 0.0
+                else:                       # fully liquid
+                    temp += dQ / (M * CP)
+            else:                           # cooling
+                if can_freeze and stored < LCAP:   # liquid present: cool to t_nuc, freeze
+                    if temp > t_nuc:
+                        temp += dQ / (M * CP)
+                        if temp < t_nuc:
+                            stored += (t_nuc - temp) * (M * CP)
+                            temp = t_nuc
+                    else:
+                        stored += -dQ
+                    if stored > LCAP:       # fully frozen, spill into sensible cooling
+                        temp = t_nuc - (stored - LCAP) / (M * CP)
+                        stored = LCAP
+                else:                       # cannot nucleate, or already solid
+                    temp += dQ / (M * CP)
 
             temp = max(TS, temp)
             t += DT
@@ -108,8 +126,11 @@ def main():
     ax.legend(fontsize=6, frameon=True, framealpha=1.0, edgecolor="0.75", loc="upper right")
     ax.spines[["top", "right"]].set_visible(False)
     plt.tight_layout(pad=0.4)
-    plt.savefig("figure_4.png", dpi=600, bbox_inches="tight")
-    print("\nwrote figure_4.png")
+    out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "figure_4.png")
+    plt.savefig(out, dpi=600, bbox_inches="tight")
+    plt.savefig(out.replace(".png", ".tif"), dpi=600, bbox_inches="tight",
+                pil_kwargs={"compression": "tiff_lzw"})
+    print("\nwrote figure_4.png and figure_4.tif")
 
 
 if __name__ == "__main__":
