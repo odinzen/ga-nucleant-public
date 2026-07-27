@@ -31,11 +31,8 @@ Q_LOAD = 5.0    # chip load, W
 TS = 20.0       # cold plate, degC
 TM = 29.76      # gallium melt point, degC
 T_LIMIT = 60.0  # junction cap, degC
-R_COOL = 0.73   # buffer-to-plate resistance, K/W
-# The rest interval must exceed the re-solidification time (~M*L / cooling power at the
-# freezing plateau, about 75 s here) or even a perfect nucleant cannot recover between
-# cycles. A representative equal-duty cycle is used.
-T_ON, T_OFF = 180.0, 180.0  # load-on / load-off, s
+R_COOL = 1.0 / 0.30   # buffer-to-plate resistance = 1/UA, K/W (UA = 0.30 W/K, Table S5)
+T_ON, T_OFF = 180.0, 430.0  # load-on / load-off, s (Table S5)
 DT = 0.5        # timestep, s
 N_CYCLES = 6
 LCAP = M * L    # total latent capacity, J
