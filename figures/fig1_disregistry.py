@@ -43,21 +43,23 @@ with open(CSV_PATH, encoding="utf-8") as fh:
             measured_cn.append((d, uc[0], uc[1], name))
 
 # Zhang et al. (2020) oxides/metals, manuscript Table 1 (open squares). Not in Table S2.
+# Disregistry recomputed on the two-axis (010) rule (recompute_disregistry.py).
 zhang = [
-    (6.3, 38.2, "TeO$_2$"),
-    (6.4, 44.6, "CaO"),
-    (6.9, 53.7, "MgO"),
-    (20.1, 52.5, "Cu"),
-    (36.6, 53.8, "Fe"),
+    (6.43, 38.2, "TeO$_2$"),
+    (6.48, 44.6, "CaO"),
+    (6.96, 53.7, "MgO"),
+    (20.15, 52.5, "Cu"),
+    (36.64, 53.8, "Fe"),
 ]
 
 fig, ax = plt.subplots(figsize=(4.6, 3.1))
+ax.set_xscale("log")
 
 ax.axhline(y=67.8, color="k", linestyle="--", linewidth=0.8, zorder=1)
-ax.text(39.6, 65.6, "Homogeneous (67.8 K)", fontsize=6.5, va="top", ha="right")
+ax.text(95.0, 65.6, "Homogeneous (67.8 K)", fontsize=6.5, va="top", ha="right")
 
-ax.axvspan(5.0, 40.0, alpha=0.05, color="k", zorder=0)
-ax.text(30.0, 14, "Saturation region", fontsize=6, ha="center", color="0.55")
+ax.axvspan(5.0, 100.0, alpha=0.05, color="k", zorder=0)
+ax.text(16.0, 12, "Saturation region", fontsize=6, ha="center", color="0.55")
 
 for d, uc, lbl in zhang:
     ax.scatter(d, uc, marker="s", s=24, facecolors="none", edgecolors="k",
@@ -69,8 +71,8 @@ for d, uc, bound, name in measured_cn:
         ax.annotate("", xy=(d, uc - 4.0), xytext=(d, uc - 0.5),
                     arrowprops=dict(arrowstyle="->", color="0.5", lw=0.7), zorder=2)
 
-# Predictions HfN, ScN: short down-arrows near zero, labels fanned up with leaders.
-pred_xy = {"HfN": (0.7, 44.0), "ScN": (3.0, 44.0)}
+# Predictions HfN, ScN: short down-arrows near their disregistry, labels fanned up with leaders.
+pred_xy = {"HfN": (0.14, 40.0), "ScN": (0.55, 26.0)}
 for d, name in predictions:
     ax.annotate("", xy=(d, 2), xytext=(d, 11),
                 arrowprops=dict(arrowstyle="->", color="k", lw=0.8), zorder=3)
@@ -82,13 +84,13 @@ for d, name in predictions:
 # unicode subscripts; render it through mathtext.
 si_name = next(n for _, _, _, n in measured_cn if "Si" in n)
 cn_labels = {
-    "ZrN": (2.3, 10.0, "left"),
-    "HfC": (3.4, 20.0, "left"),
-    "ZrC": (4.7, 30.0, "left"),
-    "NbN": (1.9, 37.0, "right"),
-    "TiC": (3.4, 59.5, "right"),
-    "TiN": (7.1, 63.0, "left"),
-    si_name: (24.23, 73.0, "center"),
+    "ZrN": (1.29, 5.5, "center"),
+    "HfC": (2.2, 15.0, "right"),
+    "NbN": (3.4, 38.0, "left"),
+    "ZrC": (3.95, 25.0, "center"),
+    "TiC": (4.6, 61.5, "left"),
+    "TiN": (6.6, 66.0, "left"),
+    si_name: (71.29, 72.5, "center"),
 }
 display = {si_name: r"$\beta$-Si$_3$N$_4$"}
 for d, uc, bound, name in measured_cn:
@@ -96,11 +98,11 @@ for d, uc, bound, name in measured_cn:
     ax.text(lx, ly, display.get(name, name), fontsize=6.5, ha=ha, va="center")
 
 zhang_labels = {
-    "TeO$_2$": (7.1, 38.2, "left"),
-    "CaO": (7.1, 44.6, "left"),
-    "MgO": (7.7, 53.7, "left"),
-    "Cu": (20.1, 56.5, "center"),
-    "Fe": (35.2, 55.8, "right"),
+    "TeO$_2$": (8.7, 34.0, "left"),
+    "CaO": (5.0, 45.5, "right"),
+    "MgO": (9.2, 53.7, "left"),
+    "Cu": (20.95, 47.0, "center"),
+    "Fe": (36.74, 48.0, "center"),
 }
 for d, uc, lbl in zhang:
     lx, ly, ha = zhang_labels[lbl]
@@ -113,7 +115,7 @@ ax.legend(handles=[h1, h2], fontsize=6.5, frameon=False, loc="upper left",
 
 ax.set_xlabel("Lattice disregistry to $\\alpha$-Ga (010) (%)", fontsize=8.5)
 ax.set_ylabel("Supercooling (K)", fontsize=8.5)
-ax.set_xlim(-1, 40)
+ax.set_xlim(0.08, 130)
 ax.set_ylim(-2, 80)
 ax.tick_params(labelsize=7.5)
 ax.spines["top"].set_visible(False)

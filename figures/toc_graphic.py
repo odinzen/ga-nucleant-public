@@ -14,16 +14,16 @@ import matplotlib.patches as mpatches
 
 # (label, disregistry %, measured-on-Ga, untested-prediction)
 STABLE = [
-    (r"HfN",         0.05, False, True),
-    (r"ScN",         0.49, False, True),
-    (r"VO$_2$",      1.00, False, False),
-    (r"NbC",         1.17, False, False),
-    (r"ZrN",         1.19, True,  False),
-    (r"TaC",         1.40, False, False),
-    (r"TiO$_2$",     1.57, False, False),
-    (r"HfC",         2.54, True,  False),
+    (r"HfN",         0.11, False, True),
+    (r"ScN",         0.55, False, True),
+    (r"VO$_2$",      0.76, False, False),
+    (r"NbC",         1.23, False, False),
+    (r"ZrN",         1.29, True,  False),
+    (r"TaC",         1.54, False, False),
+    (r"TiO$_2$",     1.64, False, False),
+    (r"HfC",         2.61, True,  False),
 ]
-REDUCED = [(r"TeO$_2$", 6.30)]
+REDUCED = [(r"TeO$_2$", 6.43)]
 
 # top-to-bottom = best match first, reduced oxide last
 rows = STABLE + [(l, d, None, None) for l, d in REDUCED]

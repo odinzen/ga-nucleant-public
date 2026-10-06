@@ -30,19 +30,20 @@ import matplotlib.patches as mpatches
 import numpy as np
 
 # (label, disregistry %, status, measured, prediction_arrow)
+# Disregistry from the two-axis (010) recompute (recompute_disregistry.py), ranked by value.
 candidates_stable = [
-    ("HfN",   0.05, "stable",  False, True),   # prediction
-    ("ScN",   0.49, "stable",  False, True),    # prediction
-    ("VO$_2$",  1.0,  "stable",  False, False),
-    ("NbC",   1.17, "stable",  False, False),
-    ("ZrN",   1.19, "stable",  True,  False),   # measured
-    ("TaC",   1.4,  "stable",  False, False),
-    ("TiO$_2$", 1.57, "stable", False, False),
-    ("HfC",   2.54, "stable",  True,  False),   # measured
+    ("HfN",   0.11, "stable",  False, True),   # prediction
+    ("ScN",   0.55, "stable",  False, True),   # prediction
+    ("VO$_2$",  0.76, "stable", False, False),
+    ("NbC",   1.23, "stable",  False, False),
+    ("ZrN",   1.29, "stable",  True,  False),  # measured
+    ("TaC",   1.54, "stable",  False, False),
+    ("TiO$_2$", 1.64, "stable", False, False),
+    ("HfC",   2.61, "stable",  True,  False),  # measured
 ]
 
 candidates_reduced = [
-    ("TeO$_2$", 6.3,  "reduced"),
+    ("TeO$_2$", 6.43, "reduced"),
 ]
 
 all_compounds = candidates_stable + [(lbl, d, st) for lbl, d, st in candidates_reduced]

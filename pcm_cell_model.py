@@ -11,8 +11,9 @@ recovery turns on a single inequality,
 
 which is the design rule the paper reports. Three cases are run: a near-coherent
 nucleant (2 K residual, refreezes every cycle), the best measured oxide (38 K), and bulk
-gallium (58 K). The last two cannot nucleate above the plate, so after the first cycle
-they carry sensible heat only and the junction runs past its limit.
+gallium at its measured homogeneous supercooling (67.8 K, the calibration value). The last
+two cannot nucleate above the plate, so after the first cycle they carry sensible heat only
+and the junction runs past its limit.
 
 Reproduces Figure 4 of "Stability-filtered lattice matching for the discovery of
 supercooling nucleants in gallium and its low-melting alloys".
@@ -28,9 +29,9 @@ M = 10.0        # buffer mass, g
 L = 80.0        # latent heat, J/g
 CP = 0.37       # specific heat, J/(g K)
 Q_LOAD = 5.0    # chip load, W
-TS = 20.0       # cold plate, degC
-TM = 29.76      # gallium melt point, degC
-T_LIMIT = 60.0  # junction cap, degC
+TS = 293.15     # cold plate, K (20 degC)
+TM = 302.91     # gallium melt point, K (29.76 degC)
+T_LIMIT = 333.15  # junction cap, K (60 degC)
 R_COOL = 1.0 / 0.30   # buffer-to-plate resistance = 1/UA, K/W (UA = 0.30 W/K, Table S5)
 T_ON, T_OFF = 180.0, 430.0  # load-on / load-off, s (Table S5)
 DT = 0.5        # timestep, s
@@ -105,21 +106,21 @@ def simulate(residual_undercooling, n_cycles=N_CYCLES):
 def main():
     cases = [(2.0, "Near-coherent (HfN/ScN)", "k-"),
              (38.0, "Best oxide (TeO$_2$, 38 K)", "k--"),
-             (58.0, "Bulk Ga (58 K)", "k:")]
+             (67.8, "Bulk Ga (67.8 K)", "k:")]
 
     fig, ax = plt.subplots(figsize=(3.46, 2.8))
     for residual, label, style in cases:
         times, temps = simulate(residual)
         ax.plot(times / 60, temps, style, linewidth=1.0, label=label)
         refreezes = (TM - residual) > TS
-        print(f"{label:28} residual {residual:4.0f} K   peak {temps.max():6.1f} degC   "
+        print(f"{label:28} residual {residual:4.0f} K   peak {temps.max():6.1f} K   "
               f"refreezes every cycle: {'yes' if refreezes else 'no'}")
 
     for y in (TM, T_LIMIT, TS):
         ax.axhline(y, color="k", linewidth=0.5, alpha=0.4)
     ax.set_xlabel("Time (min)", fontsize=8)
-    ax.set_ylabel("Junction temperature (°C)", fontsize=8)
-    ax.set_ylim(15, 80)
+    ax.set_ylabel("Junction temperature (K)", fontsize=8)
+    ax.set_ylim(288, 353)
     ax.legend(fontsize=6, frameon=True, framealpha=1.0, edgecolor="0.75", loc="upper right")
     ax.spines[["top", "right"]].set_visible(False)
     plt.tight_layout(pad=0.4)

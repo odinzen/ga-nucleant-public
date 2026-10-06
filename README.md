@@ -19,18 +19,29 @@ satisfies all four.
 | File | What it is |
 |---|---|
 | `Table_S2_nucleant_screen.csv` | The full candidate screen, seventeen compounds: class, structure source, (010) disregistry, density, predicted potency factor, and measured undercooling where one exists |
-| `Table_S3_validation_statistics.csv` | Rank and linear correlations of measured undercooling against disregistry, per dataset |
+| `Table_S3_validation_statistics.csv` | Rank (Spearman) and linear (Pearson R²) correlations of measured undercooling against disregistry, per dataset, at full precision (the SI rounds them) |
+| `recompute_disregistry.py` | Computes the two-axis (010) disregistry, potency factors and the Table S3 statistics; `--write` regenerates both CSVs |
+| `cnt_baseline.py` | Classical-nucleation baseline: Turnbull interfacial energy (55 mJ m⁻²) and the predicted homogeneous undercooling (68 K) |
 | `pcm_cell_model.py` | The lumped phase-change cell model behind Figure 4. Run it to reproduce the junction-temperature history for the three cases |
-| `figures/` | The scripts that generate Figures 1-4, Figure S1, and the graphical abstract |
+| `figures/` | The scripts that generate Figures 1-4, Figure S1, and the graphical abstract. Figure S1 takes pure-gallium Gibbs energies from the SGTE unary data (Dinsdale 1991) via ESPEI |
 | `dft/` | Quantum ESPRESSO inputs and analysis for the first-principles work of adhesion (Section 2.4), computed on the Sol supercomputer at Arizona State University. Inputs and `analyze.py` reproduce the W_ad values in `dft/results_W_ad.csv`; raw outputs are not archived |
 
 ## Reproducing
 
 ```
-pip install numpy matplotlib
-python pcm_cell_model.py            # Figure 4
-python figures/fig1_disregistry.py  # and the rest
+pip install numpy scipy matplotlib
+python pcm_cell_model.py                 # Figure 4
+python cnt_baseline.py                   # interfacial energy and homogeneous undercooling
+python figures/fig1_disregistry.py       # and the other figure scripts
+
+pip install pymatgen mp-api              # for the disregistry recompute
+python recompute_disregistry.py --write  # needs MP_API_KEY (a free Materials Project key)
+
+pip install pycalphad espei              # for Figure S1 only
+python figures/figS_dG_validation.py
 ```
+
+Every table and figure archived here regenerates from these scripts and open data.
 
 ## Notes on the data
 
@@ -49,8 +60,8 @@ Odinzen LLC and are not included here.
 
 ## Licence
 
-The code (`pcm_cell_model.py` and everything under `figures/`) is under the MIT License,
-see `LICENSE`. The two CSV data tables are under CC BY 4.0, see `LICENSE-DATA`. Cite the
+The code (every `.py` file, including everything under `figures/` and `dft/`) is under the MIT
+License, see `LICENSE`. The two CSV data tables are under CC BY 4.0, see `LICENSE-DATA`. Cite the
 paper if you use either.
 
 ## Contact

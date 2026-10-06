@@ -1,28 +1,30 @@
 """SI figure: exact CALPHAD driving force for solidification of pure gallium vs
-the linear Turnbull form, with the percent deviation on a second axis. Data from
-the Ga-In-Sn TDB (G_LIQUID - G_ORTHORHOMBIC_GA for pure Ga).
+the linear Turnbull form, with the percent deviation on a second axis.
 
-This is the one script here that needs the proprietary Ga-In-Sn CALPHAD database
-(not distributed), because its sole purpose is to check the approximation used
-everywhere else. The main results use the linear Turnbull driving force, which needs
-no database and is reproducible from the paper's equations; this figure shows that
-linear form stays within a few percent of the exact CALPHAD driving force over the
-relevant undercooling range. The reported results therefore do not depend on the
-proprietary database."""
+For pure gallium the exact driving force is G_LIQUID - G_ORTHORHOMBIC_GA from the SGTE
+unary data (Dinsdale, Calphad 15 (1991) 317), read here from ESPEI's machine-readable copy,
+so no assessed database is needed. The main results use the linear Turnbull driving force,
+reproducible from the paper's equations; this figure shows that linear form stays within a
+few percent of the exact driving force over the relevant undercooling range."""
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from pycalphad import Database, calculate
+from espei.refdata import SGTE91, SGTE91Stable
 
-db = Database(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                           "..", "gainsn-calphad", "databases", "GaInSn.tdb"))
+
+def sgte_ga(phase, temps):
+    """G of pure Ga in one structure from SGTE91, J/mol, at each temperature."""
+    expr = SGTE91[("GA", phase)]
+    names = {s.name: s for s in expr.free_symbols}
+    if "GHSERGA" in names:  # structure entries are written relative to the stable-element function
+        expr = expr.subs({names["GHSERGA"]: SGTE91Stable["GA"]})
+        names = {s.name: s for s in expr.free_symbols}
+    # T is pycalphad's StateVariable, not a plain symbol, so substitute value by value.
+    return np.array([float(expr.subs({names["T"]: float(t)})) for t in temps])
+
+
 T = np.linspace(200.0, 315.0, 461)
-P = 101325.0
-Gliq = np.asarray(calculate(db, ["GA", "IN", "SN", "VA"], "LIQUID", T=T, P=P,
-                            points=np.array([[1.0, 0.0, 0.0]])).GM).squeeze()
-Gsol = np.asarray(calculate(db, ["GA", "VA"], "ORTHORHOMBIC_GA", T=T, P=P,
-                            points=np.array([[1.0]])).GM).squeeze()
-dG = Gliq - Gsol
+dG = sgte_ga("LIQUID", T) - sgte_ga("ORTHORHOMBIC_GA", T)
 Tm = float(np.interp(0.0, dG[::-1], T[::-1]))
 dSf = -float(np.interp(Tm, T, np.gradient(dG, T)))
 
