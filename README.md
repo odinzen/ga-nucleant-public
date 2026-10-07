@@ -1,10 +1,15 @@
 # Supercooling nucleants in gallium: data and code
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23213774.svg)](https://doi.org/10.5281/zenodo.23213774)
+
+Archived at Zenodo: https://doi.org/10.5281/zenodo.23213774 (version 1.0.0, the files that match the
+published paper). This repository is the maintained copy.
+
 Data and reproducibility code for:
 
 > **Stability-filtered lattice matching for the discovery of supercooling nucleants in
 > gallium and its low-melting alloys.** M. E. Bustamante, G. Bustamante, K. Lilova.
-> *Computational Materials Science* (submitted).
+> *Computational Materials Science* (accepted, in press).
 
 Gallium supercools by tens of kelvin before it freezes, which makes it unreliable as a
 phase-change medium. The usual way to pick a heterogeneous nucleant is to match its
